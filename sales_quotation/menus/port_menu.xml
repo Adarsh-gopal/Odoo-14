@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+ <!--   tree view -->   
+      <record model="ir.ui.view" id="contact_port_tree_view">
+            <field name="name">contact.port.tree.view</field>
+            <field name="model">contact.port</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Contact Port">
+                    <field name="name"/>
+                 </tree>
+            </field>
+      </record>
+<!-- form view --> 
+      <record model="ir.ui.view" id="contact_port_form_view">
+            <field name="name">contact.port.form.view</field>
+            <field name="model">contact.port</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Contact Port">
+                    <group >
+                        <field name="name"/> 
+                    </group>
+                 </form>
+              </field>
+       </record>
+
+       <record model="ir.actions.act_window" id="port_action">
+            <field name="name">Contact Port</field>
+            <field name="res_model">contact.port</field>
+            <field name="view_mode">tree,form</field>
+            
+        </record>
+        <menuitem id="contact_port_menu" parent="contacts.res_partner_menu_config" 
+                  name="Port" action="port_action"/>  
+   </data>
+</odoo>

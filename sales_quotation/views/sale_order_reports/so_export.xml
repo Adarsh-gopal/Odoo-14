@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Paper Format -->
+        <record id="sale_order_inv_temp_export" model="report.paperformat">
+            <field name="name">Woo -Sale Order Template Export</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">42</field>
+            <field name="margin_bottom">30</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">38</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="sale_order_export1" model="ir.actions.report">
+            <field name="name">WOO Sale Order Export</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sales_quotation.sale_order_export</field>
+            <field name="report_file">sales_quotation.sale_order_export</field>
+            <field name="print_report_name">(object.state in ('draft', 'sent') and 'WOO SO EXP - %s' % (object.name)) or 'WOO SO EXP - %s' % (object.name)</field>
+            <!-- <field name="binding_model_id" ref="sale.model_sale_order"/> -->
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="sales_quotation.sale_order_inv_temp_export"/>
+ 
+        </record>
+    
+       
+        <template id="sale_order_export">
+        <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                 <t t-if="not o and doc">
+                        <t t-set="o" t-value="doc"/>
+                    </t>
+
+                    <t t-if="o and 'company_id' in o">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-if="not o or not 'company_id' in o">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                   
+                    <t t-call="sales_quotation.external_layout_for_headerfooter_sale_order_export">
+
+    
+ <div class="page" style="padding:20px;" >
+        
+        <table class="table table-sm  " width="100%" style="width:100%;">
+                                <tr>
+                                    <td style="border-top:none !important;">
+                                    
+                                         <div class="row" >
+                                            
+                                            <div class="col-6">
+                                              
+                                               <b><span t-esc="'Consignee Details:'" style="font-size:14px;"/></b>
+                                                <t t-if="o.partner_id" class="text-center">
+                                                    <span t-field="o.partner_id" style="font-size:14px;"/><a>,</a><br/>
+                                                </t>
+
+                                                <t t-if="o.partner_id.street" class="text-center">
+                                                    <span t-field="o.partner_id.street" style="font-size:14px;"/><a>,</a>
+                                                </t>
+                                               
+                                                <t t-if="o.partner_id.street2" class="text-center">
+                                                    <span t-field="o.partner_id.street2" style="font-size:14px;"/><a>,</a>
+                                                </t>
+
+                                                <t t-if="o.partner_id.city" class="text-center">
+                                                   <span t-field="o.partner_id.city" style="font-size:14px;"/><a>,</a>
+                                                </t>
+                                                <t t-if="o.partner_id.city" class="text-center">
+                                                   <span t-field="o.partner_id.zip" style="font-size:14px;"/><a>,</a>
+                                                </t>
+
+                                                <t t-if="o.partner_id.country_id" class="text-center">
+                                                    <span t-field="o.partner_id.country_id" style="font-size:14px;"/>
+                                                </t>
+
+                                                <t t-if="o.partner_id.brn_nir" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Customer Reg. # : '"/></b><span t-field="o.partner_id.brn_nir"/></h6>
+                                                </t>
+
+                                                <t t-else="">
+                                                  <h6 style="font-size:14px;"><b><t t-esc="'Customer Reg. # : '"/></b><span >N/A</span></h6>
+                                                </t>
+
+                                                <t t-if="o.partner_id.fax" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Your FAX # : '"/></b><span t-field="o.partner_id.fax"/></h6>
+                                                </t>
+                                               
+                                                
+                                                <t t-if="o.partner_id.business_name" class="text-center">
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Business Name : '"/></b><span t-field="o.partner_id.business_name"/> </h6>
+                                                </t>
+                                                
+                                                
+
+                                                <t t-set="cp" t-value="o.partner_id.child_ids.filtered(lambda l: l.type in ('contact'))[:1]"/>
+                                                <t t-if="cp" class="text-center">
+                                               
+                                                    <h6 style="font-size:14px;"><b><t t-esc="'Contact Person: '"/></b><t ><span t-field="cp.name"/></t> </h6>
+                                                </t>
+
+                                                <t t-set="cp" t-value="o.partner_id.child_ids.filtered(lambda l: l.type in ('contact'))[:1]"/>
+                                                <t t-if="cp" class="text-center">
+                                                    <h6 style="font-size:14px;"><i class="fa fa-phone" aria-hidden="true">&amp;nbsp;&amp;nbsp;</i>
+                                                    
+                                                    <t t-if="cp.phone">
+                                                    <span t-field="cp.phone"/>  &amp;nbsp;&amp;nbsp;
+                                                    </t>
+
+                                                    <t t-else="">
+                                                    <span t-esc="'N/A'"/>  &amp;nbsp;&amp;nbsp;
+                                                    </t>
+
+
+                                                    <i class="fa fa-envelope" aria-hidden="true"></i> 
+                                                    
+                                                    <t t-if="cp.email">
+                                                    <span t-field="cp.email"/> 
+                                                    </t>
+
+                                                    <t t-else="">
+                                                    <span t-esc="'N/A'"/>
+                                                    </t>
+                                                     </h6>
+                                                    
+                                                </t>
+                                                <!-- <t t-if="o.partner_id.phone" class="text-center">
+                                                    <h6 style="font-size:14px;"><i class="fa fa-phone" aria-hidden="true">&amp;nbsp;&amp;nbsp;
+                                                    </i><span t-field="o.partner_id.phone"/>  &amp;nbsp;&amp;nbsp;<i class="fa fa-envelope" aria-hidden="true"></i> <span t-field="o.partner_id.email"/> 
+                                                     </h6>
+                                                    
+                                                </t> -->
+
+                                               <t t-if="o.client_order_ref" class="text-center">
+                                                            <h6 style="font-size:14px;"><b><t t-esc="'Ref : '"/></b><span t-field="o.client_order_ref"/></h6>
+                                                     </t>
+                                                    <t t-else="">
+                                                            <h6 style="font-size:14px;"><b><t t-esc="'Ref : '"/></b><span>N/A</span> </h6>
+                                                    </t>
+                                                
+                                                 <t t-if="o.country_of_origin" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Country of Origin : '"/></b><span t-field="o.country_of_origin"> </span> </h6>
+                                                    </t>
+
+
+                                                    <t t-if="o.currency_id" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Currency : '"/></b><span t-field="o.currency_id.name"/> </h6>
+                                                    </t>
+
+                                                    
+                                                   
+
+                                                    
+                                               
+
+                                                
+
+                                            </div>
+
+                                            <div class="col-6">
+                                              <div class="row" style="">
+                                                 <div class="col" style="">
+
+                                                    <t t-if="o.date_order" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Sales Order Date: '"/></b><span t-esc="o.date_order.strftime('%d %b %Y')" > </span> </h6>
+                                                    </t>
+
+                                                    <t t-if="o.user_id" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Salesperson: '"/></b><span t-field="o.user_id"/> </h6>
+                                                    </t>
+
+                                                    <t class="text-center">
+                                                        
+                                                        
+                                                        <h6 style="font-size:14px;">
+
+                                                        <t t-if="o.user_id.partner_id.phone">
+                                                        <i class="fa fa-phone" aria-hidden="true">&amp;nbsp;&amp;nbsp;
+                                                        </i><span t-field="o.user_id.partner_id.phone"/> &amp;nbsp;&amp;nbsp;
+                                                        </t>
+
+                                                        <t t-else="">
+                                                        <i class="fa fa-phone" aria-hidden="true">&amp;nbsp;&amp;nbsp;
+                                                        </i><span t-esc="'N/A'"/> &amp;nbsp;&amp;nbsp;
+                                                        </t>
+                                                        
+                                                        <t t-if="o.user_id.partner_id.email">
+                                                        <i class="fa fa-envelope" aria-hidden="true"></i> 
+                                                        <span t-field="o.user_id.partner_id.email"/> 
+                                                        </t>
+
+                                                        <t t-else="">
+                                                        <i class="fa fa-envelope" aria-hidden="true"></i> 
+                                                        <span t-esc="'N/A'"/> 
+                                                        </t>
+
+                                                        </h6>
+                                                    </t>
+
+
+                                                    <t t-if="o.team_id" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Division : '"/></b><span t-field="o.team_id"/> </h6>
+                                                    </t>
+
+                                                    <t t-if="o.quotation_no" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'WOO Ref : '"/></b><span t-field="o.quotation_no"/> <t t-esc="' -R'" /><span t-esc="'{:02}'.format(o.revision_number_sq)"/></h6>
+                                                    </t>
+
+                                                    <!-- <t t-if="o.validity_date" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Quotation Validity : '"/></b><span t-esc="o.validity_date.strftime('%d %b %Y')"> </span> </h6>
+                                                    </t> -->
+
+                                                    
+
+                                                    <t t-if="o.port_of_loading" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Port of Loading : '"/></b><span t-field="o.port_of_loading"> </span> </h6>
+                                                    </t>
+
+                                                    <t t-if="o.port_of_discharge" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Port of Discharge : '"/></b><span t-field="o.port_of_discharge"> </span> </h6>
+                                                    </t>
+
+                                                    
+
+                                                    <t t-if="o.mode_of_delivery" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Mode of Delivery : '"/></b><span t-field="o.mode_of_delivery"> </span> </h6>
+                                                    </t>
+
+                                                    <t t-if="o.incoterm" class="text-center">
+                                                        <h6 style="font-size:14px;"><b><t t-esc="'Delivery Terms : '"/></b><span t-field="o.incoterm.code"> </span> </h6>
+                                                    </t>
+
+                                                   
+
+                                                    
+                                                   
+                                                 </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>   
+
+                            
+                            <table class="table table-sm table-bordered " width="100%" style="width:100%;border:none;">
+                                <thead>
+                                    <tr>
+                                       
+                                           <th style="text-align:center;border: 1px solid;font-size:15px;width:1%">S.N</th> 
+                                           <th colspan="3" style="text-align:center;border: 1px solid;font-size:15px;">Description</th>
+                                           <th style="text-align:center;border: 1px solid;font-size:15px;">Image</th>
+                                           
+                                           <th style="text-align:center;border: 1px solid;font-size:15px;width:15%">Unit Price</th>
+                                           <th style="text-align:center;border: 1px solid;font-size:15px;width:18%;">Qty</th>
+                                           <!-- <th style="text-align:center;border: 1px solid;">Uom</th> -->
+                                           <th style="text-align:center;border: 1px solid;font-size:15px;width:15%">Amount</th>
+                                       
+                                    </tr>
+                                </thead>
+
+                                 <tbody>
+                                    <t t-set="i" t-value="1"/>
+                                    <t t-set="tot_unitqty" t-value="0.0" />
+                                    <t t-set="tot_discount" t-value="0.0" />
+                                    <t t-set="sub_total" t-value="0.0" />
+                                    <t t-set="n11" t-value="0.0" />
+                                    <t t-set="n12" t-value="0.0" />
+                                   
+                                    <t t-foreach="o.order_line" t-as="l">
+                                    <t t-if="l.product_id.type != 'service'">
+                                     <tr >
+                                       
+                                         <td class="text-center" style="border: 1px solid;font-size:15px;" >
+                                            <span t-esc="i"/>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                        <td class="text-left" colspan="3" style="width:35%;border: 1px solid;font-size:15px;" >
+                                            <!-- <b><span t-field="l.product_id"/></b><br/>  -->
+                                            <span t-field="l.name"/>  
+                                        </td>
+
+                                        <td class="text-left" style="padding: 10px;border: 1px solid;font-size:15px;width:10%;height:10%">
+                                           <span style="height:150px;width:150px;" t-field="l.product_id.image_256"
+                                            t-options="{&quot;widget&quot;: &quot;image&quot;, &quot;class&quot;: &quot;img-square w-100&quot; }"/>
+                                        </td>
+
+                                       
+
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                            <b><span t-field="l.price_unit"/></b>  
+                                            <t t-set="tot_unitqty" t-value="tot_unitqty + (l.price_unit * l.product_uom_qty)"/>
+                                        </td>
+                                        <td class="text-right" style="border: 1px solid;" >
+                                           <b><span t-field="l.product_uom_qty"/></b> <b><span t-field="l.product_uom"/></b> 
+                                        </td>
+
+                                         <!-- <td class="text-center" style="border: 1px solid;">
+                                            <b><span t-field="l.product_uom"/></b>  
+                                            
+                                        </td> -->
+
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;" >
+                                          
+                                         <b><span t-esc="'{:,.2f}'.format(l.price_unit * l.product_uom_qty)" /></b>
+                                         <t t-set="line_sub_total" t-value="(l.price_unit * l.product_uom_qty)"/>
+                                         <t t-set="sub_total" t-value="sub_total + line_sub_total"/>
+
+                                        <t t-set="line_discount" t-value="((l.price_unit * l.product_uom_qty)*l.discount/100)"/>
+                                        <t t-set="tot_discount" t-value="tot_discount + line_discount"/>
+                                          
+                                        </td>
+                  
+                 
+                                     </tr>
+                                     </t>
+                                     </t>
+
+                                     <tr>
+                                        <!-- <t t-set="n13" t-value="0.0" /> -->
+                                        <t t-set="n11" t-value="n11 + o.total_actual_advance" />
+                                        <t t-set="n12" t-value="n11 + o.amount_total" />
+                                        <t t-set="n14" t-value="n11 - n12" />
+                                         
+                                        
+                                        <td colspan="6" t-att-rowspan="9 if tot_discount != 0.0 else 7" style="border:none !important;vertical-align:bottom">
+                                           <t t-if="(o.amount_total - o.total_actual_advance) &gt;0">
+                                           <i>
+                                        
+                                          <h6 style="font-size:15px;" > <b><t t-esc="'Net Amount In Words: '"/></b>
+                                           <t t-set="nt_totalwords" t-value="(o.amount_total - o.total_actual_advance)"/>
+                                          <b><span style="font-size:15px; line-height:0px;" t-esc="o.amount_to_text(nt_totalwords)"/></b></h6>
+                                         </i>
+                                           </t>
+                                        </td>
+                                       
+
+                                        <t t-if="tot_discount != 0.0">
+
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <h6 style="color:maroon"><b><t t-esc="'Sub Total 1'"/></b></h6>
+                                        </td>
+                                         <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <b><span t-esc="'{:,.2f}'.format(sub_total)"/></b>
+                                        </td>
+                                        </t>
+
+                                        <t t-else="">
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <h6 style="color:maroon"><b><t t-esc="'Sub Total'"/></b></h6>
+                                        </td>
+                                         <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <b><span t-esc="'{:,.2f}'.format(sub_total)"/></b>
+                                        </td>
+                                        </t>
+                                        
+
+                                     </tr>
+
+                                    <t t-if="tot_discount != 0.0">
+                                        <tr>
+                                       
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <h6 style="color:maroon"><b><t t-esc="'Discount'"/></b></h6>
+                                        </td>
+                                         <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <b><span t-esc="'{:,.2f}'.format(tot_discount)"/></b>
+                                        </td>
+
+                                        </tr>
+                                     
+
+                                    <tr>
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <h6 style="color:maroon"><b><t t-esc="'Sub Total 2'"/></b></h6>
+                                        </td>
+                                         <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <b><span t-esc="'{:,.2f}'.format(sub_total-tot_discount)"/></b>
+                                        </td>
+                                    </tr>
+                                    </t>
+
+                                            <t t-foreach="o.order_line" t-as="l">
+                                            <t t-if="l.product_id.type == 'service'">
+                                      <tr>
+                                      
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                            
+                                            <h6 style="color:maroon"><b><span t-field="l.name"/></b></h6>
+
+                                            
+                                         </td>
+                                          <td class="text-right" style="border: 1px solid;font-size:15px;">   
+                                       
+                                        <b><span t-esc="'{:,.2f}'.format(l.price_unit * l.product_uom_qty)" /></b>
+                                         <t t-set="line_sub_total" t-value="(l.price_unit * l.product_uom_qty)"/>
+                                         <t t-set="sub_total" t-value="sub_total + line_sub_total"/>
+                                        </td>
+                                       
+                                    </tr>
+                                         </t>
+                                            </t>
+
+                                     
+
+
+                                    
+
+                                     <tr>
+                                        
+                                        <td class="text-right" style="background-color:maroon;border-color:maroon;border-top-color: maroon;border: 1px solid;">
+                                             <h6 style="color:white;font-size:15px;"><b> <span>Grand Total(<t t-esc="o.incoterm.code"/>)</span></b></h6>
+                                        </td>
+                                         <td class="text-right" style="background-color:maroon; border-color:maroon;border-top-color: maroon;border: 1px solid;">
+                                             <b><span style="color:white;font-size:15px;" t-esc="'{:,.2f}'.format(o.amount_total)"/>
+                                             <t t-set="nt_total1" t-value="o.amount_total"/>
+                                             </b>
+                                        </td>
+
+                                     </tr>
+
+
+                                     <t t-if="nt_total2 != 0.0">
+                                    <tr>
+                                        
+                                        <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <h6 style="color:maroon"><b><t t-esc="'Advanced Paid'"/></b></h6>
+                                        </td>
+                                         <td class="text-right" style="border: 1px solid;font-size:15px;">
+                                             <b><span style="color:maroon" t-esc="'{:,.2f}'.format(o.total_actual_advance)"/></b>
+                                              <t t-set="nt_total2" t-value="o.total_actual_advance"/>
+                                        </td>
+
+                                     </tr>
+                                     </t>
+
+                                     <tr>
+                                        
+                                        <td class="text-right" style="background-color:#1C2331;border-color:#1C2331;border-top-color: #1C2331;border: 1px solid;font-size:15px;">
+                                             <h6 style="color:white"><b><t t-esc="'Net Total To Be Received'"/></b></h6>
+                                        </td>
+                                         <td class="text-right" style="background-color:#1C2331; border-color:#1C2331;border-top-color: #1C2331;border: 1px solid;font-size:15px;">
+                                             <b><span style="color:white" t-esc="'{:,.2f}'.format(nt_total1-nt_total2)"/></b>
+                                            
+                                        </td>
+
+                                     </tr>
+
+                                </tbody>
+                            </table> 
+                             <div style="line-height:1.4;">
+                                <!-- <i><b style="font-size:14px;"><t t-esc="'Terms and Conditions :'"/></b></i><br/>
+                                <span t-field="o.note" style="font-size:14px;"/><br/>
+                                <i><b style="font-size:14px;"><t t-esc="'Warranty : '"></t></b></i>
+                                <span t-field="o.warrenty" style="font-size:14px;"/>
+                                
+                                <i><b style="font-size:14px;"><t t-esc="'Payment Terms : '" ></t></b></i><span t-field="o.payment_term_id" style="font-size:14px;"/><br/> -->
+
+                                <t t-if="o.delivery_period">
+                                <i><b style="font-size:14px;"><t t-esc="'Delivery Period : '"></t></b></i><span style="font-size:14px;" t-field="o.delivery_period"/><br/>
+                                </t>
+
+                                 <!-- <t t-if="o.incoterm">
+                                  <i><b style="font-size:14px;"><t t-esc="'Delivery : '"></t></b></i><span t-field="o.incoterm" style="font-size:14px;"/> <br/>
+                                 </t> -->
+                               
+
+                                <i><b style="font-size:14px;"><u><t t-esc="'Payment instructions'"/></u></b></i><br/>
+                                <span t-field="company.payment_instructions" style="font-size:14px;"/><br/>
+                                <b style="font-size:14px;"><i><t t-esc="' Bank : '"></t></i><span t-field="o.bank_id"/>&amp;nbsp;&amp;nbsp;<i><t t-esc="'A/C No :'"/></i><span t-field="o.bank_account_id"/></b><br/>
+                                <i style="font-size:14px;"><span  t-field="company.export_general_note"></span></i><br/>
+
+                            </div>
+                            
+                            <div class="row" style = "margin-top:0px;position:relative;text-align:center;page-break-inside: avoid !important;">
+                                <div class="col-6" style="text-align:left;">
+                                    <label style="font-size:16px;"><strong>Prepared By :  </strong><span t-field="o.user_id"/></label>
+                                </div>
+                                <div class="col-6" style="text-align:right;">
+                                <t t-set="auth" t-value="request.env['mail.message'].search([('model','=','sale.order'),('res_id','=',o.id),('subtype_id','=',request.env.ref('sale.mt_order_confirmed').id)])"/>
+                              
+                               
+                                    <label style="font-size:16px;"><strong>Authorized By:</strong>
+                                    <t t-if="auth">
+                                        <span t-field="auth.create_uid"></span>
+                                    </t>
+                                    </label>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="row" style="margin-top:5px;page-break-inside: avoid !important;">
+                               <div class="col-12">
+                              
+                                     <h6 class="text-center" style="font-size:15px;color:red"><b>Note:</b> <span t-field="company.info_msg"/></h6>
+                               </div>
+                            </div>
+                           
+</div>
+</t>
+                   
+                </t>
+            </t>
+</template>
+
+        
+    </data>
+</odoo>  

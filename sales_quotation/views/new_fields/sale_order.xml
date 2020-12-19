@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <!-- <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <button name="print_taxes" type="object" string="Test print"/>
+                </field>
+               
+            </field> 
+             </record>
+            -->
+            
+            <!-- <record id="view_order_form_inherit" model="ir.ui.view">
+        	<field name="name">sale.order.form</field>
+        	<field name="model">sale.order</field>
+        	<field name="inherit_id" ref="sale.view_order_form"/>
+        	<field name="arch" type="xml">
+            	    <xpath expr="//field[@name='order_line']/tree/group/field[@name='product_id']" position="after">
+                        <field name="taxes"/>
+                    </xpath>
+        	</field>
+</record> -->
+
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        	<field name="name">Company Footer Logo</field>
+        	<field name="model">res.company</field>
+        	<field name="inherit_id" ref="base.view_company_form"/>
+        	<field name="arch" type="xml">
+            	<xpath expr="//form//field[@name='logo']" position="after">
+                		<field name="footer_custom" widget="image" class="oe_avatar"/>
+            	</xpath>
+                <xpath expr="//field[@name='website']" position="after"> 
+                    <field name="payment_instructions"/>
+                    <field name="showrooms"/>
+                    <field name="instagram"/>
+                    <field name="facebook"/>
+                </xpath> 
+                 <xpath expr="//field[@name='website']" position="after"> 
+                    <field name="info_msg"/>
+                    <field name="export_general_note"/>
+                    <field name="export_general_note_quotation"/>
+                </xpath> 
+        	</field>
+    </record>
+
+    <record id="contact_new_fields" model="ir.ui.view">
+        	<field name="name">Contact New Fields</field>
+        	<field name="model">res.partner</field>
+        	<field name="inherit_id" ref="base.view_partner_form"/>
+        	<field name="arch" type="xml">
+                <xpath expr="//field[@name='function']" position="after"> 
+                    <field name="fax"/>
+                </xpath> 
+            
+                <xpath expr="//form//page[@name='sales_purchases']//field[@name='user_id']" position="after">
+                     <field name="port_of_discharge" options="{'no_create' : True}"/>
+                </xpath>
+
+                <xpath expr="//form//page[@name='sales_purchases']//field[@name='user_id']" position="after">
+                     <field name="mode_of_delivery"/>
+                </xpath>
+        	</field>
+    </record>
+
+    <record id="sale_new_fields" model="ir.ui.view">
+        	<field name="name">New Ports</field>
+        	<field name="model">sale.order</field>
+        	<field name="inherit_id" ref="sale.view_order_form"/>
+        	<field name="arch" type="xml">
+                <xpath expr="//field[@name='tag_ids']" position="after"> 
+                    <field name="port_of_discharge"/>
+                </xpath> 
+                <xpath expr="//field[@name='tag_ids']" position="after"> 
+                    <field name="mode_of_delivery"/>
+                </xpath> 
+
+                <xpath expr="//field[@name='tag_ids']" position="after"> 
+                    <field name="port_of_loading"/>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="after"> 
+                    <field name="country_of_origin"/>
+                </xpath>
+                
+        	</field>
+    </record>
+
+    
+
+    <!-- <record id="contact_new_fields" model="ir.ui.view">
+        	<field name="name">New Fields In Contact</field>
+        	<field name="model">res.partner</field>
+        	<field name="inherit_id" ref="base.view_partner_form"/>
+        	<field name="arch" type="xml">
+            	
+                
+                 <xpath expr="//form//sheet//group[@name='group2']/field[@name='email']"  position="after">
+                           
+                          <field name="fax"/> 
+                            
+                </xpath>
+        	</field>
+    </record> -->
+
+    <!-- <record id="sale_form_inherit" model="ir.ui.view">
+        	<field name="name">Sale Order New Note</field>
+        	<field name="model">sale.order</field>
+        	<field name="inherit_id" ref="sale.view_order_form"/>
+        	<field name="arch" type="xml">
+            	
+                <xpath expr="//field[@name='note']" position="after"> 
+               <field name="payment_instructions"/>
+          </xpath> 
+        	</field>
+    </record> -->
+     
+    </data>
+</odoo>

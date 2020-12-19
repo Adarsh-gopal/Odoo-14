@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+    
+    <template id="external_layout_for_headerfooter_pro_forma">
+   
+       <div class="header">
+        <!-- <div style="border:2px solid maroon;"></div> -->
+       <table class="table table-sm  table-condensed" width="100%" style="width:100%;margin-bottom:none !important;">
+                    <tr>
+                        <td style="border-top:none !important;" >
+                         
+                            <div class="row" >
+                                <div class="col-6">
+                                <img class="text-right" t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="margin-left:-24px;height:146;width:474px;padding-left:0px;"/>
+                                </div>
+                                
+                                <div class="col-6 text-left" style="font-size:12px !important;padding-left:20px;">
+                                    <h3><b>
+                                            <span style="font-size: 24px;font-family: sans-serif;" t-field="company.partner_id"/>
+                                        </b>
+                                    </h3>
+                                   
+                                    <span style="font-size:13px">
+                                    <span t-field="company.partner_id.street"/>
+                                    
+                                    <span t-field="company.partner_id.street2"/>
+                                    <span t-field="company.city"/>
+                                    
+                                    
+                                    <br/>
+                                    <span t-field="company.country_id" class="text-center right"/> 
+                                    &amp;nbsp;&amp;nbsp;
+                                    <i class="fa fa-globe" aria-hidden="true"> &amp;nbsp;&amp;nbsp;</i><span class="mk-footer-copyright cl" style="font-size:13px;" t-field="company.website"></span>
+                                    
+                                    <br/>
+                                    <i class="fa fa-phone" aria-hidden="true"></i> &amp;nbsp;&amp;nbsp;  <span style="text-transform:uppercase" t-field="company.phone" class="text-center right"/> &amp;nbsp;&amp;nbsp; 
+                                    <i class="fa fa-envelope" aria-hidden="true"> &amp;nbsp;&amp;nbsp;</i> <span class="mk-footer-copyright cl" style="font-size:13px;" t-field="company.email"/>
+                                    <br/>
+                                    <t t-esc="'VAT #'"/><span t-field="company.vat"/> &amp;nbsp;&amp;nbsp; <t t-esc="'SVAT #'"/><span t-field="company.svat_reg_no"/>
+                                   
+                                    </span>
+                                     <b><h5 style="font-size:20px;font-family:Lato-Bol;color:maroon;">Proforma Invoice # <span t-field="o.name"/><t t-esc="' -R'" /><span t-esc="'{:02}'.format(o.revision_number_sq)"/></h5></b>
+                                    
+                                </div>                        
+                            </div>
+                           
+
+                        </td>
+                        
+                    </tr>
+                </table>
+                <!-- </div> -->
+                </div> 
+         
+        <!-- Qweb Font -->
+            <!-- <template id="report_assets_common_custom_fonts" name="Custom QWeb fonts" inherit_id="web.report_assets_common">
+            <xpath expr="." position="inside">
+                <link href="/sales_quotation/static/src/css/report.css" rel="stylesheet" type="text/css"/>
+            </xpath>
+            </template> -->
+        <!-- Qweb Font -->
+
+
+        <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+            
+        </div>
+
+        
+
+        <div class="footer o_standard_footer"  >
+          
+          <hr/>
+         
+                        <!-- <div style="background-image:url('/sales_quotation/static/images/N_A footage 02.png');background-size:contain;padding:28px;background-position: center;background-repeat: no-repeat;">
+                            
+                        </div> -->
+
+                       <img class="text-right" t-if="company.footer_custom" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_custom)" style="margin-left:-24px;height:1%;width:1%;padding-left:0px;"/>
+                       <!-- <img t-if="company.footer_custom" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_custom)" style="background-size:contain;max-width:50%;height:auto;opacity:10 !important;"/>      -->
+                        <img t-if="company.footer_custom" t-att-src="'data:image/png;base64,%s' % to_text(company.footer_custom)" style="background-size:contain;max-width:100%;height:auto;opacity:10 !important;"/>
+                        <div class="row">
+                            
+                                <div class="col-4" style="text-align:left;">
+                                    <!-- <i class="fa fa-envelope" aria-hidden="true"> &amp;nbsp;&amp;nbsp;</i>   <i> <span class="mk-footer-copyright cl" style="font-size:14px;" t-field="company.email"/></i> -->
+                                   <span>
+                                    <i class="fa fa-facebook-square" style="font-size:16px;" aria-hidden="true"></i>
+                                    <span t-field="company.facebook" style="font-size:1px;color:white;"/>   
+                                   </span>
+
+                                   <span>
+                                    <i class="fa fa-instagram" style="font-size:16px;" aria-hidden="true"></i>
+                                    <span t-field="company.instagram" style="font-size:1px;color:white;"/>   
+                                   </span>
+
+                                   <span>
+                                    <i class="fa fa-globe" style="font-size:16px;" aria-hidden="true"></i>
+                                    <span t-field="company.email" style="font-size:1px;color:white;"/>   
+                                   </span>
+                                   &amp;nbsp;&amp;nbsp;
+                                   
+
+                                   <span>
+                                    <i class="fa fa-envelope" style="font-size:16px;" aria-hidden="true"></i>
+                                    <span t-field="company.website" style="font-size:1px;color:white;"/>   
+                                   </span>
+                                         
+                                </div>
+
+                                 
+
+                                <div class="col-6" style="text-align:center;">
+                                    <i> <span class="mk-footer-copyright cl" style="font-size:14px;" t-field="company.showrooms"></span></i>    
+                                </div>
+
+                                 
+                            
+                                <div class="col-2" style="text-align:right;">
+                                    <small style="font-size:14px;">
+                                        <span>Page</span>
+                                        <span class="page" />
+                                        of
+                                        <span class="topage" />
+                                    </small>
+                                
+                                </div>  
+                        </div>
+
+                        
+                        
+
+                            
+                              
+        </div>
+ 
+
+    </template>
+
+</data>
+
+</odoo>

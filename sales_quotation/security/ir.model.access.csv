@@ -1,0 +1,6 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+contact_port_id,contact_port_model_id,model_contact_port,,1,1,1,1
+mode_of_delivery_id,mode_of_delivery_model_id,model_mode_of_delivery,,1,1,1,1
+sale_print_wiz_id,sale_print_wiz_model_id,model_sale_print_wiz,,1,1,1,1
+
+

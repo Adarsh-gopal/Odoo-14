@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+    	<record model="ir.ui.view" id="wizard_form_view">
+            <field name="name">Sale.Print.Wiz</field>
+            <field name="model">sale.print.wiz</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <group>
+                        <group>
+                            <field name="saleorder_id" readonly="1"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                       
+                    </group>
+                    <group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve'])]}">  
+                            <button name="action_confirm" id="report1" string="WOO Quote W/O Taxbreakup" class="btn btn-primary" context="{'report_type':'wqwot'}" type="object" />
+                        </group>    
+
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve'])]}">
+                            <button name="action_confirm" id="report2" string="WOO Quote With Taxbreakup" class="btn btn-primary" context="{'report_type':'wqwt'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve'])]}">
+                            <button name="action_confirm" id="report3" string="WOO Quote Export With Discount" class="btn btn-primary" context="{'report_type':'wqexp'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve'])]}">
+                            <button name="action_confirm" id="report4" string="WOO Quotation With Taxbreakup W/O Discount" class="btn btn-primary" context="{'report_type':'wqwod'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve'])]}">
+                            <button name="action_confirm" id="report5" string="WOO Quote Export W/O Discount" class="btn btn-primary" context="{'report_type':'wqewod'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve','sent'])]}">
+                            <button name="action_confirm" id="report6" string="	WOO Pro-Forma With Taxbreakup" class="btn btn-primary" context="{'report_type':'wpwt'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve','sent'])]}">
+                            <button name="action_confirm" id="report7" string="WOO Pro-Forma W/O Taxbreakup" class="btn btn-primary" context="{'report_type':'wpwot'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['quotation_approve','sent'])]}">
+                            <button name="action_confirm" id="report8" string="WOO Pro-Forma Export" class="btn btn-primary" context="{'report_type':'wpexp'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['sale'])]}">
+                            <button name="action_confirm" id="report9" string="WOO Sale Order With Taxbreakup" class="btn btn-primary" context="{'report_type':'wswt'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['sale'])]}">
+                            <button name="action_confirm" id="report9" string="WOO Sale Order W/O Taxbreakup" class="btn btn-primary" context="{'report_type':'wswot'}" type="object"/>
+                        </group>
+                        <group attrs="{'invisible': [('state', 'not in', ['sale'])]}">
+                            <button name="action_confirm" id="report9" string="WOO Sale Order Export" class="btn btn-primary" context="{'report_type':'wsxp'}" type="object"/>
+                        </group>
+                            
+
+                       
+                    </group>
+                    <footer>
+</footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="sale_print_wiz_action" model="ir.actions.act_window">
+            <field name="name">Print Reports</field>
+            <field name="res_model">sale.print.wiz</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+        </record>
+
+	</data>
+</odoo>
