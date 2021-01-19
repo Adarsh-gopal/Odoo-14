@@ -14,7 +14,7 @@
     'website': "https://www.prixgen.com",
 
     'category': 'Customization',
-    'version': '14.0.3.2',
+    'version': '14.0.3.3',
 
     'depends': ['base','account','hr_expense'],
 
